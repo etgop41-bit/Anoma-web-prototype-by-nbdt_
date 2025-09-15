@@ -19,13 +19,13 @@
       animation: floating 3s ease-in-out infinite;
     }
     @keyframes pulsing-light {
-      0% { box-shadow: 0 0 50px rgba(168, 85, 247, 0.5); }
-      50% { box-shadow: 0 0 80px rgba(168, 85, 247, 0.8); }
-      100% { box-shadow: 0 0 50px rgba(168, 85, 247, 0.5); }
+      0% { box-shadow: 0 0 50px rgba(239, 68, 68, 0.5); }
+      50% { box-shadow: 0 0 80px rgba(239, 68, 68, 0.8); }
+      100% { box-shadow: 0 0 50px rgba(239, 68, 68, 0.5); }
     }
     .bg-futuristic {
-      background-image: radial-gradient(at 20% 70%, #1a202c 0%, transparent 50%), radial-gradient(at 80% 20%, #2b6cb0 0%, transparent 50%), linear-gradient(to bottom, #111827, #1a202c);
-      animation: pulsing-light 10s infinite;
+      background-image: radial-gradient(at 20% 70%, #fef2f2 0%, transparent 50%), radial-gradient(at 80% 20%, #ef4444 0%, transparent 50%), linear-gradient(to bottom, #f3f4f6, #fef2f2);
+      animation: none; /* No pulsing light for pure red/white theme */
     }
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
@@ -64,7 +64,7 @@
       transition: all 0.3s ease-in-out;
     }
     .token-card:hover {
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
       transform: translateY(-5px);
     }
     .token-card::before {
@@ -74,7 +74,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, rgba(168, 85, 247, 0.2), rgba(59, 130, 246, 0.2));
+      background: linear-gradient(45deg, rgba(239, 68, 68, 0.2), rgba(255, 255, 255, 0.2));
       opacity: 0;
       transition: opacity 0.3s;
       pointer-events: none;
@@ -87,19 +87,34 @@
     }
     .nft-card:hover {
         transform: scale(1.03) rotate(2deg);
-        box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.3), 0 4px 6px -2px rgba(168, 85, 247, 0.3);
+        box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3), 0 4px 6px -2px rgba(239, 68, 68, 0.3);
     }
     /* Add a glow effect to the balance text */
     .balance-glow {
-        text-shadow: 0 0 5px rgba(52, 211, 153, 0.8), 0 0 10px rgba(52, 211, 153, 0.6);
+        text-shadow: 0 0 5px rgba(239, 68, 68, 0.8), 0 0 10px rgba(239, 68, 68, 0.6);
     }
     @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
     .major-mono-display {
       font-family: 'Major Mono Display', monospace;
     }
+    .nft-emoji-container {
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      border-radius: 12px;
+      background-color: #f3f4f6;
+      transition: all 0.3s ease-in-out;
+    }
+    .nft-emoji-container:hover {
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+      transform: scale(1.05);
+    }
   </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans">
+<body class="bg-gray-100 text-gray-900 font-sans">
   <div id="root"></div>
 
   <script type="text/babel">
@@ -114,15 +129,18 @@
       
       // Wallet States
       const [walletBalances, setWalletBalances] = useState({ 
-        ANOMA: 500, ETH: 10, USDC: 1500, SOL: 50, AVAX: 20, BTC: 1 
+        XAN: 500, ETH: 10, USDC: 1500, SOL: 50, AVAX: 20, BTC: 1 
       });
       const [myNfts, setMyNfts] = useState([
-        { id: 1, name: 'Cosmic Kitty #7', imageUrl: 'https://placehold.co/150x150/1a202c/667eea?text=Cosmic+Kitty', price: null },
-        { id: 2, name: 'Galactic Glitch #22', imageUrl: 'https://placehold.co/150x150/1a202c/d53f8c?text=Galactic+Glitch', price: null },
+        { id: 1, name: 'Cosmic Kitty #7', emoji: '🐈‍⬛' },
+        { id: 2, name: 'Galactic Glitch #22', emoji: '👾' },
       ]);
       const [nftsForSale, setNftsForSale] = useState([
-        { id: 3, name: 'Cyber Rhino #1', imageUrl: 'https://placehold.co/150x150/1a202c/38b2ac?text=Cyber+Rhino', price: 150 },
-        { id: 4, name: 'Pixel Dragon #9', imageUrl: 'https://placehold.co/150x150/1a202c/718096?text=Pixel+Dragon', price: 200 },
+        { id: 7, name: 'Shrimpers', emoji: '🦐', price: 1200 },
+        { id: 3, name: 'Cyber Rhino #1', emoji: '🦏🤖', price: 150 },
+        { id: 4, name: 'Pixel Dragon #9', emoji: '🐉', price: 200 },
+        { id: 5, name: 'Astral Ape #5', emoji: '🦍🪐', price: 850 },
+        { id: 6, name: 'Neon Samurai #4', emoji: '⚔️', price: 300 },
       ]);
       const [sellPrice, setSellPrice] = useState({});
 
@@ -146,17 +164,18 @@
 
       // Governance States
       const [proposals, setProposals] = useState([
-        { id: 1, title: 'Activate new liquidity pool module', votesFor: 120, votesAgainst: 30, voted: null },
-        { id: 2, title: 'Adjust transaction fee schedule', votesFor: 80, votesAgainst: 60, voted: null },
+        { id: 1, title: 'Reward a 1% allocation of XAN to NFT holders?', votesFor: 120, votesAgainst: 30, voted: null },
+        { id: 2, title: 'Initiate a buyback and giveaway of 1% of the XAN supply?', votesFor: 80, votesAgainst: 60, voted: null },
+        { id: 3, title: 'Burn 1% of the current XAN supply?', votesFor: 95, votesAgainst: 25, voted: null },
       ]);
 
       // Buy Anoma States
       const [buyAmount, setBuyAmount] = useState('');
 
       // DEX States
-      const tokens = ['ANOMA', 'ETH', 'USDC', 'SOL', 'AVAX', 'BTC'];
+      const tokens = ['XAN', 'ETH', 'USDC', 'SOL', 'AVAX', 'BTC'];
       const [dexInputAmount, setDexInputAmount] = useState('');
-      const [dexInputToken, setDexInputToken] = useState('ANOMA');
+      const [dexInputToken, setDexInputToken] = useState('XAN');
       const [dexOutputToken, setDexOutputToken] = useState('ETH');
 
       // Anoma Pay States
@@ -179,16 +198,6 @@
         'SUI': ['SUI'],
         'AVAX': ['AVAX', 'USDC'],
         'BITCOIN': ['BTC'],
-      };
-
-      // Map tokens to their logos using more reliable URLs
-      const tokenLogos = {
-        ANOMA: 'https://pbs.twimg.com/profile_images/1780517594916739072/Jk69B_u__400x400.jpg',
-        ETH: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Ethereum_logo_2014.svg',
-        USDC: 'https://upload.wikimedia.org/wikipedia/commons/b/b3/USD_Coin_logo.svg',
-        SOL: 'https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.svg',
-        AVAX: 'https://upload.wikimedia.org/wikipedia/en/e/e7/Avalanche_%28AVAX%29_logo.svg',
-        BTC: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/BTC_Logo_for_dark_backgrounds.svg',
       };
 
       // --- Initial Setup ---
@@ -233,12 +242,12 @@
       const handlePay = (e) => {
         e.preventDefault();
         const amount = parseFloat(payAmount);
-        if (isNaN(amount) || amount <= 0 || amount > walletBalances.ANOMA) {
-          setMessage('Invalid amount or insufficient ANOMA balance.');
+        if (isNaN(amount) || amount <= 0 || amount > walletBalances.XAN) {
+          setMessage('Invalid amount or insufficient XAN balance.');
           return;
         }
-        setWalletBalances(prev => ({ ...prev, ANOMA: prev.ANOMA - amount }));
-        setMessage(`Payment of ${amount} ANOMA to ${payAddress} simulated successfully.`);
+        setWalletBalances(prev => ({ ...prev, XAN: prev.XAN - amount }));
+        setMessage(`Payment of ${amount} XAN to ${payAddress} simulated successfully.`);
         setPayAddress('');
         setPayAmount('');
       };
@@ -249,20 +258,20 @@
         const scannedAmount = 75;
         setPayAddress(scannedAddress);
         setPayAmount(scannedAmount);
-        setMessage(`QR code scanned! Ready to pay ${scannedAmount} ANOMA to ${scannedAddress}.`);
+        setMessage(`QR code scanned! Ready to pay ${scannedAmount} XAN to ${scannedAddress}.`);
       };
 
       // --- NFT Marketplace Logic ---
       const handleBuyNft = (nftId, price) => {
-        if (walletBalances.ANOMA < price) {
-          setMessage('Insufficient ANOMA balance to buy this NFT.');
+        if (walletBalances.XAN < price) {
+          setMessage('Insufficient XAN balance to buy this NFT.');
           return;
         }
-        setWalletBalances(prev => ({ ...prev, ANOMA: prev.ANOMA - price }));
+        setWalletBalances(prev => ({ ...prev, XAN: prev.XAN - price }));
         const boughtNft = nftsForSale.find(nft => nft.id === nftId);
         setMyNfts(prev => [...prev, { ...boughtNft, price: null }]);
         setNftsForSale(prev => prev.filter(nft => nft.id !== nftId));
-        setMessage(`Successfully bought "${boughtNft.name}" for ${price} ANOMA!`);
+        setMessage(`Successfully bought "${boughtNft.name}" for ${price} XAN!`);
       };
 
       const handleSellNft = (nftId, price) => {
@@ -274,7 +283,7 @@
         const nftToSell = myNfts.find(nft => nft.id === nftId);
         setNftsForSale(prev => [...prev, { ...nftToSell, price: amount }]);
         setMyNfts(prev => prev.filter(nft => nft.id !== nftId));
-        setMessage(`Successfully listed "${nftToSell.name}" for ${amount} ANOMA on the marketplace.`);
+        setMessage(`Successfully listed "${nftToSell.name}" for ${amount} XAN on the marketplace.`);
         setSellPrice(prev => ({ ...prev, [nftId]: '' }));
       };
 
@@ -320,13 +329,13 @@
       const handleStake = (e) => {
         e.preventDefault();
         const amount = parseFloat(stakeInput);
-        if (isNaN(amount) || amount <= 0 || amount > walletBalances.ANOMA) {
+        if (isNaN(amount) || amount <= 0 || amount > walletBalances.XAN) {
           setMessage('Please enter a valid amount to stake.');
           return;
         }
         setStakedAmount((prev) => prev + amount);
-        setWalletBalances(prev => ({ ...prev, ANOMA: prev.ANOMA - amount }));
-        setMessage(`Successfully staked ${amount} ANOMA.`);
+        setWalletBalances(prev => ({ ...prev, XAN: prev.XAN - amount }));
+        setMessage(`Successfully staked ${amount} XAN.`);
         setStakeInput('');
       };
 
@@ -338,8 +347,8 @@
           return;
         }
         setStakedAmount((prev) => prev - amount);
-        setWalletBalances(prev => ({ ...prev, ANOMA: prev.ANOMA + amount }));
-        setMessage(`Successfully unstaked ${amount} ANOMA.`);
+        setWalletBalances(prev => ({ ...prev, XAN: prev.XAN + amount }));
+        setMessage(`Successfully unstaked ${amount} XAN.`);
         setUnstakeInput('');
       };
 
@@ -361,16 +370,16 @@
         );
       };
 
-      // --- Buy ANOMA Logic (Simulated) ---
-      const handleBuyAnoma = (e) => {
+      // --- Buy XAN Logic (Simulated) ---
+      const handleBuyXAN = (e) => {
         e.preventDefault();
         const amount = parseFloat(buyAmount);
         if (isNaN(amount) || amount <= 0) {
           setMessage('Please enter a valid amount to buy.');
           return;
         }
-        setWalletBalances(prev => ({ ...prev, ANOMA: prev.ANOMA + amount }));
-        setMessage(`Simulated purchase of ${amount} ANOMA successful!`);
+        setWalletBalances(prev => ({ ...prev, XAN: prev.XAN + amount }));
+        setMessage(`Simulated purchase of ${amount} XAN successful!`);
         setBuyAmount('');
       };
       
@@ -392,17 +401,6 @@
         }));
         setMessage(`Successfully swapped ${amount} ${dexInputToken} for ${outputAmount.toFixed(2)} ${dexOutputToken}.`);
         setDexInputAmount('');
-      };
-
-      // --- Faucet Logic ---
-      const handleFaucetClaim = () => {
-        const claimAmount = 5;
-        setWalletBalances(prev => ({
-          ...prev,
-          ETH: (prev.ETH || 0) + claimAmount,
-          USDC: (prev.USDC || 0) + claimAmount * 150,
-        }));
-        setMessage(`Claimed ${claimAmount} ETH and ${claimAmount * 150} USDC from the testnet faucet!`);
       };
 
       // --- Bridge Logic ---
@@ -429,6 +427,38 @@
           setBridgeToChain(chains.find(c => c !== newChain));
         }
       };
+      
+      const TokenLogo = ({ token }) => {
+        const logoStyles = "w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-3xl";
+        switch (token) {
+          case 'XAN':
+            return (
+              <div className={`${logoStyles} bg-red-600`}>⚛️</div>
+            );
+          case 'ETH':
+            return (
+              <div className={`${logoStyles} bg-red-500`}>🔷</div>
+            );
+          case 'USDC':
+            return (
+              <div className={`${logoStyles} bg-red-500`}>💲</div>
+            );
+          case 'SOL':
+            return (
+              <div className={`${logoStyles} bg-red-700`}>☀️</div>
+            );
+          case 'AVAX':
+            return (
+              <div className={`${logoStyles} bg-red-600`}>❄️</div>
+            );
+          case 'BTC':
+            return (
+              <div className={`${logoStyles} bg-red-500`}>🟡</div>
+            );
+          default:
+            return null;
+        }
+      };
 
       // --- Component Rendering ---
       const renderContent = () => {
@@ -436,34 +466,34 @@
           case 'wallet':
             return (
               <>
-                <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">My Wallet</h2>
+                <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">My Wallet</h2>
                   <ul className="space-y-4">
                     {Object.entries(walletBalances).map(([token, balance]) => (
-                      <li key={token} className="token-card p-4 bg-gray-800 rounded-lg border-l-4 border-purple-500 flex justify-between items-center transform hover:scale-105 transition-transform duration-300">
+                      <li key={token} className="token-card p-4 bg-gray-100 rounded-lg border-l-4 border-red-500 flex justify-between items-center transform hover:scale-105 transition-transform duration-300">
                         <div className="flex items-center space-x-4">
-                          {tokenLogos[token] && (
-                            <img src={tokenLogos[token]} alt={`${token} logo`} className="w-10 h-10 rounded-full object-cover" />
-                          )}
-                          <p className="text-xl font-bold text-gray-100">{token}</p>
+                          <TokenLogo token={token} />
+                          <p className="text-xl font-bold text-gray-900">{token}</p>
                         </div>
-                        <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-500 major-mono-display balance-glow">
+                        <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600 major-mono-display balance-glow">
                           {balance}
                         </p>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">My NFTs</h2>
+                <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">My NFTs</h2>
                   {myNfts.length === 0 ? (
-                    <p className="text-center text-gray-400">No NFTs in your wallet.</p>
+                    <p className="text-center text-gray-500">No NFTs in your wallet.</p>
                   ) : (
                     <div className="grid grid-cols-2 gap-4">
                       {myNfts.map(nft => (
-                        <div key={nft.id} className="bg-gray-800 p-4 rounded-lg flex flex-col items-center transition-all duration-300 nft-card">
-                          <img src={nft.imageUrl} alt={nft.name} className="rounded-lg mb-2" />
-                          <p className="text-sm text-gray-100 font-medium text-center">{nft.name}</p>
+                        <div key={nft.id} className="bg-gray-100 p-4 rounded-lg flex flex-col items-center transition-all duration-300 nft-card">
+                          <div className="nft-emoji-container">
+                            {nft.emoji}
+                          </div>
+                          <p className="text-sm text-gray-900 font-medium text-center">{nft.name}</p>
                         </div>
                       ))}
                     </div>
@@ -473,57 +503,59 @@
             );
           case 'marketplace':
             return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">NFT Marketplace</h2>
-                <p className="text-gray-400 text-center mb-6">Buy, sell, and trade unique digital assets.</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4 text-center">For Sale</h3>
-                    {nftsForSale.length === 0 ? (
-                      <p className="text-center text-gray-400">No NFTs listed for sale.</p>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-4">
-                        {nftsForSale.map(nft => (
-                          <div key={nft.id} className="bg-gray-800 p-4 rounded-lg flex items-center justify-between">
-                            <img src={nft.imageUrl} alt={nft.name} className="w-16 h-16 rounded-lg" />
-                            <div className="ml-4 flex-1">
-                              <p className="text-lg text-gray-100 font-medium">{nft.name}</p>
-                              <p className="text-sm text-gray-400">{nft.price} ANOMA</p>
-                            </div>
+              <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">NFT Marketplace</h2>
+                <p className="text-gray-500 text-center mb-6">Buy, sell, and trade unique digital assets.</p>
+                <div className="flex flex-col md:flex-row gap-6">
+                  {/* NFTs For Sale Section */}
+                  <div className="flex-1 bg-gray-100 p-6 rounded-lg shadow-inner-lg">
+                    <h3 className="text-xl font-semibold mb-4 text-gray-900">Trending Now</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {nftsForSale.map(nft => (
+                        <div key={nft.id} className="relative bg-white rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:z-10">
+                          <div className="flex justify-center items-center h-48">
+                             <div className="nft-emoji-container">
+                               {nft.emoji}
+                             </div>
+                          </div>
+                          <div className="absolute inset-x-0 bottom-0 bg-white bg-opacity-75 backdrop-blur-sm p-4 text-center">
+                            <p className="text-sm font-semibold text-gray-900 truncate">{nft.name}</p>
+                            <p className="text-xs text-gray-500 mt-1">{nft.price} XAN</p>
                             <button
                               onClick={() => handleBuyNft(nft.id, nft.price)}
-                              className="py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-bold transition duration-300"
+                              className="w-full mt-2 py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-md text-xs font-bold transition duration-300"
                             >
                               Buy
                             </button>
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4 text-center">Your NFTs (Sell)</h3>
+                  {/* Your NFTs Section */}
+                  <div className="flex-1 bg-gray-100 p-6 rounded-lg shadow-inner-lg">
+                    <h3 className="text-xl font-semibold mb-4 text-gray-900">Your NFTs</h3>
                     {myNfts.length === 0 ? (
-                      <p className="text-center text-gray-400">No NFTs to sell.</p>
+                      <p className="text-center text-gray-500">You don't own any NFTs yet.</p>
                     ) : (
                       <div className="grid grid-cols-1 gap-4">
                         {myNfts.map(nft => (
-                          <div key={nft.id} className="bg-gray-800 p-4 rounded-lg flex items-center justify-between">
-                            <img src={nft.imageUrl} alt={nft.name} className="w-16 h-16 rounded-lg" />
-                            <div className="ml-4 flex-1">
-                              <p className="text-lg text-gray-100 font-medium">{nft.name}</p>
+                          <div key={nft.id} className="bg-white rounded-xl p-4 flex flex-col items-center">
+                            <div className="nft-emoji-container mb-4">
+                              {nft.emoji}
                             </div>
-                            <form onSubmit={(e) => { e.preventDefault(); handleSellNft(nft.id, sellPrice[nft.id]); }} className="flex items-center space-x-2">
+                            <p className="text-md font-medium text-gray-900 mb-2 text-center">{nft.name}</p>
+                            <form onSubmit={(e) => { e.preventDefault(); handleSellNft(nft.id, sellPrice[nft.id]); }} className="flex w-full items-center space-x-2">
                                 <input
                                   type="number"
                                   value={sellPrice[nft.id] || ''}
                                   onChange={(e) => setSellPrice(prev => ({...prev, [nft.id]: e.target.value}))}
-                                  placeholder="Price"
-                                  className="w-24 p-2 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 text-sm"
+                                  placeholder="List price (XAN)"
+                                  className="flex-1 p-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
                                 />
                                 <button
                                   type="submit"
-                                  className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition duration-300"
+                                  className="py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition duration-300"
                                 >
                                   Sell
                                 </button>
@@ -538,39 +570,39 @@
             );
           case 'dex':
             return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Decentralized Exchange</h2>
+              <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Decentralized Exchange</h2>
                 <form onSubmit={handleDexSwap} className="space-y-4">
                   <div>
-                    <label htmlFor="dexInputAmount" className="block text-sm font-medium text-gray-400">Amount:</label>
+                    <label htmlFor="dexInputAmount" className="block text-sm font-medium text-gray-500">Amount:</label>
                     <input
                       id="dexInputAmount"
                       type="number"
                       value={dexInputAmount}
                       onChange={(e) => setDexInputAmount(e.target.value)}
                       placeholder="e.g., 100"
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     />
                   </div>
                   <div className="flex space-x-4">
                     <div className="flex-1">
-                      <label htmlFor="dexInputToken" className="block text-sm font-medium text-gray-400">From:</label>
+                      <label htmlFor="dexInputToken" className="block text-sm font-medium text-gray-500">From:</label>
                       <select
                         id="dexInputToken"
                         value={dexInputToken}
                         onChange={(e) => setDexInputToken(e.target.value)}
-                        className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       >
                         {tokens.map(t => <option key={t} value={t}>{t}</option>)}
                       </select>
                     </div>
                     <div className="flex-1">
-                      <label htmlFor="dexOutputToken" className="block text-sm font-medium text-gray-400">To:</label>
+                      <label htmlFor="dexOutputToken" className="block text-sm font-medium text-gray-500">To:</label>
                       <select
                         id="dexOutputToken"
                         value={dexOutputToken}
                         onChange={(e) => setDexOutputToken(e.target.value)}
-                        className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       >
                         {tokens.filter(t => t !== dexInputToken).map(t => <option key={t} value={t}>{t}</option>)}
                       </select>
@@ -578,7 +610,7 @@
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                   >
                     Swap Tokens
                   </button>
@@ -586,66 +618,53 @@
               </div>
             );
           case 'faucet':
-            return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in text-center">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-200">Testnet Faucet</h2>
-                <p className="text-gray-400 mb-6">
-                  Claim free testnet tokens to experiment with the Anoma ecosystem.
-                </p>
-                <button
-                  onClick={handleFaucetClaim}
-                  className="py-4 px-8 bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white font-bold rounded-lg shadow-md transition duration-300"
-                >
-                  Claim Testnet Tokens
-                </button>
-              </div>
-            );
+            return null; // Faucet section removed
           case 'intents':
             return (
               <>
-                <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Submit an Intent</h2>
+                <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Submit an Intent</h2>
                   <form onSubmit={handleIntentSubmit} className="space-y-4">
                     <div>
-                      <label htmlFor="want" className="block text-sm font-medium text-gray-400">What you WANT:</label>
+                      <label htmlFor="want" className="block text-sm font-medium text-gray-500">What you WANT:</label>
                       <input
                         id="want"
                         type="text"
                         value={newWant}
                         onChange={(e) => setNewWant(e.target.value)}
-                        placeholder="e.g., '100 ANOMA tokens'"
-                        className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        placeholder="e.g., '100 XAN tokens'"
+                        className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       />
                     </div>
                     <div>
-                      <label htmlFor="offer" className="block text-sm font-medium text-gray-400">What you OFFER:</label>
+                      <label htmlFor="offer" className="block text-sm font-medium text-gray-500">What you OFFER:</label>
                       <input
                         id="offer"
                         type="text"
                         value={newOffer}
                         onChange={(e) => setNewOffer(e.target.value)}
                         placeholder="e.g., 'My Rare NFT'"
-                        className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                        className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       />
                     </div>
                     <button
                       type="submit"
-                      className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+                      className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                     >
                       Submit Intent
                     </button>
                   </form>
                 </div>
                 {/* Intent Visualizer */}
-                <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Intent Solver Visualizer</h2>
-                  <div className="relative h-48 bg-gray-900 rounded-lg overflow-hidden flex flex-col justify-center items-center p-4">
+                <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                  <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Intent Solver Visualizer</h2>
+                  <div className="relative h-48 bg-gray-100 rounded-lg overflow-hidden flex flex-col justify-center items-center p-4">
                     <p className="text-gray-500 mb-2">Simulating the Anoma solver...</p>
                     <div className="flex justify-center items-center space-x-6">
                       {intents.slice(0, 3).map((intent, index) => (
                         <div key={index} className="text-center floating-text" style={{ animationDelay: `${index * 0.5}s` }}>
-                          <i className="fas fa-satellite-dish text-purple-400 text-3xl"></i>
-                          <p className="text-sm text-gray-400 mt-2">{intent.offer} for {intent.want}</p>
+                          <i className="fas fa-satellite-dish text-red-500 text-3xl"></i>
+                          <p className="text-sm text-gray-500 mt-2">{intent.offer} for {intent.want}</p>
                         </div>
                       ))}
                     </div>
@@ -661,73 +680,73 @@
             );
           case 'staking':
             return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">ANOMA Staking</h2>
+              <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">XAN Staking</h2>
                 <div className="text-center mb-6">
-                  <p className="text-gray-400 text-lg">Your Staked ANOMA</p>
-                  <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-500">
+                  <p className="text-gray-500 text-lg">Your Staked XAN</p>
+                  <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
                     {stakedAmount}
                   </p>
                 </div>
                 <form onSubmit={handleStake} className="space-y-4 mb-4">
                   <div>
-                    <label htmlFor="stakeAmount" className="block text-sm font-medium text-gray-400">Amount to Stake:</label>
+                    <label htmlFor="stakeAmount" className="block text-sm font-medium text-gray-500">Amount to Stake:</label>
                     <input
                       id="stakeAmount"
                       type="number"
                       value={stakeInput}
                       onChange={(e) => setStakeInput(e.target.value)}
                       placeholder="e.g., 50"
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                   >
-                    Stake ANOMA
+                    Stake XAN
                   </button>
                 </form>
                 <form onSubmit={handleUnstake} className="space-y-4">
                   <div>
-                    <label htmlFor="unstakeAmount" className="block text-sm font-medium text-gray-400">Amount to Unstake:</label>
+                    <label htmlFor="unstakeAmount" className="block text-sm font-medium text-gray-500">Amount to Unstake:</label>
                     <input
                       id="unstakeAmount"
                       type="number"
                       value={unstakeInput}
                       onChange={(e) => setUnstakeInput(e.target.value)}
                       placeholder="e.g., 25"
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                   >
-                    Unstake ANOMA
+                    Unstake XAN
                   </button>
                 </form>
               </div>
             );
           case 'governance':
             return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Governance Voting</h2>
+              <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Governance Voting</h2>
                 <ul className="space-y-4">
                   {proposals.map((p) => (
-                    <li key={p.id} className="p-4 bg-gray-800 rounded-lg border-l-4 border-orange-500">
-                      <h3 className="text-xl font-medium text-gray-100">{p.title}</h3>
+                    <li key={p.id} className="p-4 bg-gray-100 rounded-lg border-l-4 border-red-500">
+                      <h3 className="text-xl font-medium text-gray-900">{p.title}</h3>
                       <div className="flex justify-between items-center mt-2">
-                        <p className="text-sm text-gray-400">For: <span className="text-green-400 font-bold">{p.votesFor}</span> | Against: <span className="text-red-400 font-bold">{p.votesAgainst}</span></p>
+                        <p className="text-sm text-gray-500">For: <span className="text-red-400 font-bold">{p.votesFor}</span> | Against: <span className="text-red-400 font-bold">{p.votesAgainst}</span></p>
                         {p.voted ? (
-                          <span className={`text-sm font-bold rounded-full px-3 py-1 ${p.voted === 'for' ? 'bg-green-600' : 'bg-red-600'}`}>
+                          <span className={`text-sm font-bold rounded-full px-3 py-1 ${p.voted === 'for' ? 'bg-red-600 text-white' : 'bg-red-600 text-white'}`}>
                             Voted {p.voted}
                           </span>
                         ) : (
                           <div className="space-x-2">
                             <button
                               onClick={() => handleVote(p.id, 'for')}
-                              className="py-1 px-3 bg-green-600 hover:bg-green-700 text-white rounded-full text-sm font-bold"
+                              className="py-1 px-3 bg-red-600 hover:bg-red-700 text-white rounded-full text-sm font-bold"
                             >
                               Vote For
                             </button>
@@ -747,113 +766,113 @@
             );
           case 'anoma-pay':
             return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Anoma Pay</h2>
-                <p className="text-gray-400 text-center mb-6">
-                  Make fast, low-fee payments using ANOMA tokens.
+              <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Anoma Pay</h2>
+                <p className="text-gray-500 text-center mb-6">
+                  Make fast, low-fee payments using Anoma tokens.
                 </p>
                 <div className="flex flex-col space-y-4">
                   <button
                     onClick={handleScanQR}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                   >
                     <i className="fas fa-qrcode mr-2"></i> Scan QR Code
                   </button>
                   <div className="relative text-center text-gray-500">
-                    <div className="absolute inset-y-0 left-0 w-1/2 border-b border-gray-600 my-auto"></div>
-                    <span className="relative z-10 bg-gray-700 px-4">OR</span>
-                    <div className="absolute inset-y-0 right-0 w-1/2 border-b border-gray-600 my-auto"></div>
+                    <div className="absolute inset-y-0 left-0 w-1/2 border-b border-gray-300 my-auto"></div>
+                    <span className="relative z-10 bg-white px-4">OR</span>
+                    <div className="absolute inset-y-0 right-0 w-1/2 border-b border-gray-300 my-auto"></div>
                   </div>
                 </div>
                 <form onSubmit={handlePay} className="space-y-4 mt-4">
                   <div>
-                    <label htmlFor="payAddress" className="block text-sm font-medium text-gray-400">Merchant/Address:</label>
+                    <label htmlFor="payAddress" className="block text-sm font-medium text-gray-500">Merchant/Address:</label>
                     <input
                       id="payAddress"
                       type="text"
                       value={payAddress}
                       onChange={(e) => setPayAddress(e.target.value)}
                       placeholder="e.g., 0x2e...1234"
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     />
                   </div>
                   <div>
-                    <label htmlFor="payAmount" className="block text-sm font-medium text-gray-400">Amount (ANOMA):</label>
+                    <label htmlFor="payAmount" className="block text-sm font-medium text-gray-500">Amount (Anoma):</label>
                     <input
                       id="payAmount"
                       type="number"
                       value={payAmount}
                       onChange={(e) => setPayAmount(e.target.value)}
                       placeholder="e.g., 50"
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-700 hover:to-yellow-600 text-white font-bold rounded-lg shadow-md transition duration-300"
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                   >
-                    Pay with ANOMA
+                    Pay with Anoma
                   </button>
                 </form>
               </div>
             );
           case 'bridge':
             return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Asset Bridge</h2>
-                <p className="text-gray-400 text-center mb-6">
+              <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Asset Bridge</h2>
+                <p className="text-gray-500 text-center mb-6">
                   Bridge tokens between chains with ultra-low fees.
                 </p>
                 <form onSubmit={handleBridge} className="space-y-4">
                   <div className="flex space-x-4">
                     <div className="flex-1">
-                      <label htmlFor="bridgeFromChain" className="block text-sm font-medium text-gray-400">From Chain:</label>
+                      <label htmlFor="bridgeFromChain" className="block text-sm font-medium text-gray-500">From Chain:</label>
                       <select
                         id="bridgeFromChain"
                         value={bridgeFromChain}
                         onChange={handleBridgeFromChainChange}
-                        className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       >
                         {chains.map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
                     </div>
                     <div className="flex-1">
-                      <label htmlFor="bridgeToChain" className="block text-sm font-medium text-gray-400">To Chain:</label>
+                      <label htmlFor="bridgeToChain" className="block text-sm font-medium text-gray-500">To Chain:</label>
                       <select
                         id="bridgeToChain"
                         value={bridgeToChain}
                         onChange={(e) => setBridgeToChain(e.target.value)}
-                        className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       >
                         {chains.filter(c => c !== bridgeFromChain).map(c => <option key={c} value={c}>{c}</option>)}
                       </select>
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="bridgeToken" className="block text-sm font-medium text-gray-400">Token:</label>
+                    <label htmlFor="bridgeToken" className="block text-sm font-medium text-gray-500">Token:</label>
                     <select
                       id="bridgeToken"
                       value={bridgeToken}
                       onChange={(e) => setBridgeToken(e.target.value)}
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     >
                       {chainsToTokens[bridgeFromChain] && chainsToTokens[bridgeFromChain].map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="bridgeAmount" className="block text-sm font-medium text-gray-400">Amount:</label>
+                    <label htmlFor="bridgeAmount" className="block text-sm font-medium text-gray-500">Amount:</label>
                     <input
                       id="bridgeAmount"
                       type="number"
                       value={bridgeAmount}
                       onChange={(e) => setBridgeAmount(e.target.value)}
                       placeholder="e.g., 5"
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold rounded-lg shadow-md transition duration-300"
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                   >
                     Bridge
                   </button>
@@ -862,29 +881,29 @@
             );
           case 'buy':
             return (
-              <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Buy ANOMA with Card</h2>
+              <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Buy XAN with Card</h2>
                 <div className="text-center mb-6">
-                  <p className="text-gray-400 text-lg">Simulated Transaction</p>
-                  <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-500">
-                    Purchase ANOMA
+                  <p className="text-gray-500 text-lg">Simulated Transaction</p>
+                  <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
+                    Purchase XAN
                   </p>
                 </div>
-                <form onSubmit={handleBuyAnoma} className="space-y-4">
+                <form onSubmit={handleBuyXAN} className="space-y-4">
                   <div>
-                    <label htmlFor="buyAmount" className="block text-sm font-medium text-gray-400">Amount of ANOMA to buy:</label>
+                    <label htmlFor="buyAmount" className="block text-sm font-medium text-gray-500">Amount of XAN to buy:</label>
                     <input
                       id="buyAmount"
                       type="number"
                       value={buyAmount}
                       onChange={(e) => setBuyAmount(e.target.value)}
                       placeholder="e.g., 200"
-                      className="mt-1 block w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                      className="mt-1 block w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 px-4 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-bold rounded-lg shadow-md transition duration-300"
+                    className="w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                   >
                     Proceed to Checkout
                   </button>
@@ -893,42 +912,42 @@
             );
           case 'community':
               return (
-                <div className="bg-gray-700 p-6 rounded-xl shadow-lg fade-in">
-                    <h2 className="text-2xl font-semibold mb-4 text-center text-gray-200">Community Feed</h2>
+                <div className="bg-white p-6 rounded-xl shadow-lg fade-in">
+                    <h2 className="text-2xl font-semibold mb-4 text-center text-gray-900">Community Feed</h2>
                     <form onSubmit={handleNewPost} className="mb-6">
                         <textarea
                             value={newPostContent}
                             onChange={(e) => setNewPostContent(e.target.value)}
                             placeholder="Share your thoughts with the community..."
-                            className="w-full p-3 bg-gray-900 border border-gray-600 rounded-lg text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full p-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-red-500"
                             rows="3"
                         ></textarea>
                         <button
                             type="submit"
-                            className="mt-2 w-full py-2 px-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-bold rounded-lg shadow-md transition duration-300"
+                            className="mt-2 w-full py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-md transition duration-300"
                         >
                             Post
                         </button>
                     </form>
                     <ul className="space-y-4">
                         {posts.map(post => (
-                            <li key={post.id} className="p-4 bg-gray-800 rounded-lg border-l-4 border-blue-500 fade-in">
+                            <li key={post.id} className="p-4 bg-gray-100 rounded-lg border-l-4 border-red-500 fade-in">
                                 <div className="flex items-center mb-2">
-                                    <i className="fas fa-user-circle text-2xl text-gray-400 mr-2"></i>
+                                    <i className="fas fa-user-circle text-2xl text-gray-500 mr-2"></i>
                                     <div>
-                                        <p className="font-bold text-blue-300">{post.user}</p>
+                                        <p className="font-bold text-gray-700">{post.user}</p>
                                         <p className="text-xs text-gray-500">{new Date(post.timestamp).toLocaleString()}</p>
                                     </div>
                                 </div>
-                                <p className="text-gray-200">{post.content}</p>
+                                <p className="text-gray-900">{post.content}</p>
                                 <div className="flex items-center mt-3">
                                     <button
                                         onClick={() => handleLike(post.id)}
-                                        className="text-gray-400 hover:text-red-500 transition duration-300"
+                                        className="text-gray-500 hover:text-red-500 transition duration-300"
                                     >
                                         <i className="fas fa-heart mr-1 pop-animation"></i>
                                     </button>
-                                    <span className="text-sm text-gray-400 ml-1">{post.likes}</span>
+                                    <span className="text-sm text-gray-500 ml-1">{post.likes}</span>
                                 </div>
                             </li>
                         ))}
@@ -945,107 +964,96 @@
         <div className="min-h-screen flex flex-col items-center p-4">
           <div className="bg-futuristic min-h-screen min-w-full absolute -z-10" />
 
-          <div className="w-full max-w-2xl bg-gray-800 bg-opacity-70 backdrop-blur-sm rounded-2xl shadow-xl p-8 space-y-8 my-8">
+          <div className="w-full max-w-2xl bg-white bg-opacity-70 backdrop-blur-sm rounded-2xl shadow-xl p-8 space-y-8 my-8">
             {/* Header and User Info */}
             <header className="text-center">
               <div className="flex justify-center items-center mb-4">
-                <svg
-                  className="w-12 h-12 text-purple-400"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-                <h1 className="text-4xl font-bold ml-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">
+                <div class="w-12 h-12">
+                  <svg width="48" height="48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img">
+                    <path d="M50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0ZM50 78.4357C34.054 78.4357 21.5643 65.946 21.5643 50C21.5643 34.054 34.054 21.5643 50 21.5643C65.946 21.5643 78.4357 34.054 78.4357 50C78.4357 65.946 65.946 78.4357 50 78.4357Z" fill="#D1D5DB"/>
+                    <path d="M50 0C77.6142 0 100 22.3858 100 50L78.4357 50C78.4357 34.054 65.946 21.5643 50 21.5643L50 0Z" fill="#EF4444"/>
+                    <path d="M0 50C0 22.3858 22.3858 0 50 0V21.5643C34.054 21.5643 21.5643 34.054 21.5643 50H0Z" fill="#EF4444"/>
+                    <path d="M50 50 L50 30 A20 20 0 0 1 70 50 L50 50 Z" fill="#4B5563" />
+                  </svg>
+                </div>
+                <h1 className="text-4xl font-bold ml-4 text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800">
                   Anoma Dashboard
                 </h1>
               </div>
-              <p className="mt-2 text-gray-400">Intent-centric app prototyping environment.</p>
+              <p className="mt-2 text-gray-500">Intent-centric app prototyping environment.</p>
               <div className="mt-4 text-xs font-mono text-gray-500">
-                User ID: <span className="text-purple-300">{userId}</span>
+                User ID: <span className="text-red-600">{userId}</span>
               </div>
             </header>
 
             {/* Navigation Tabs */}
-            <nav className="flex flex-wrap justify-center items-center bg-gray-700 p-2 rounded-xl shadow-inner-lg">
+            <nav className="flex flex-wrap justify-center items-center bg-gray-100 p-2 rounded-xl shadow-inner-lg">
               <button
                 onClick={() => setActiveView('wallet')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'wallet' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'wallet' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-wallet mb-1"></i>
                 <span className="text-xs">Wallet</span>
               </button>
               <button
                 onClick={() => setActiveView('marketplace')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'marketplace' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'marketplace' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-store mb-1"></i>
                 <span className="text-xs">Marketplace</span>
               </button>
               <button
                 onClick={() => setActiveView('intents')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'intents' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'intents' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-rocket mb-1"></i>
                 <span className="text-xs">Intents</span>
               </button>
               <button
                 onClick={() => setActiveView('staking')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'staking' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'staking' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-chart-bar mb-1"></i>
                 <span className="text-xs">Staking</span>
               </button>
               <button
                 onClick={() => setActiveView('dex')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'dex' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'dex' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-arrow-right-arrow-left mb-1"></i>
                 <span className="text-xs">DEX</span>
               </button>
               <button
                 onClick={() => setActiveView('governance')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'governance' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'governance' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-gavel mb-1"></i>
                 <span className="text-xs">Gov.</span>
               </button>
               <button
                 onClick={() => setActiveView('anoma-pay')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'anoma-pay' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'anoma-pay' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-money-bill-transfer mb-1"></i>
                 <span className="text-xs">Pay</span>
               </button>
               <button
                 onClick={() => setActiveView('bridge')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'bridge' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'bridge' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-bridge-circle-xmark mb-1"></i>
                 <span className="text-xs">Bridge</span>
               </button>
               <button
-                onClick={() => setActiveView('faucet')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'faucet' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
-              >
-                <i className="fas fa-hand-holding-usd mb-1"></i>
-                <span className="text-xs">Faucet</span>
-              </button>
-              <button
                 onClick={() => setActiveView('buy')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'buy' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'buy' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-credit-card mb-1"></i>
                 <span className="text-xs">Buy</span>
               </button>
               <button
                 onClick={() => setActiveView('community')}
-                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'community' ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:bg-gray-600'}`}
+                className={`flex-1 flex flex-col items-center justify-center p-3 m-1 rounded-lg font-bold transition duration-300 transform hover:scale-105 ${activeView === 'community' ? 'bg-red-600 text-white shadow-md' : 'text-gray-900 hover:bg-gray-200'}`}
               >
                 <i className="fas fa-comments mb-1"></i>
                 <span className="text-xs">Community</span>
@@ -1054,7 +1062,7 @@
 
             {/* Message Area */}
             {message && (
-              <div className="p-3 rounded-lg text-center bg-gray-600 text-gray-200 fade-in">
+              <div className="p-3 rounded-lg text-center bg-red-100 text-red-700 fade-in">
                 {message}
               </div>
             )}
@@ -1068,10 +1076,9 @@
       );
     };
 
-    const container = document.getElementById('root');
+    const container = documen.getElementById('root');
     const root = ReactDOM.createRoot(container);
     root.render(<App />);
   </script>
 </body>
 </html>
-
